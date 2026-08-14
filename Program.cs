@@ -1,33 +1,24 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
-using OpenAI.Chat;
+﻿using Google.GenAI;
+using Microsoft.Extensions.Configuration;
 
-string endpoint = "https://<your-resource>.openai.azure.com/";
-string apiKey = "<your-api-key>";
-string deploymentName = "<your-deployment-name>";
+var configuration = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
 
-var client = new AzureOpenAIClient(
-    new Uri(endpoint),
-    new AzureKeyCredential(apiKey));
+string apiKey = configuration["GEMINI_API_KEY"]
+    ?? throw new InvalidOperationException(
+        "GEMINI_API_KEY is not configured.");
 
-ChatClient chatClient = client.GetChatClient(deploymentName);
+var client = new Client(apiKey: apiKey);
 
-var messages = new List<ChatMessage>
+while (true)
 {
-    new SystemChatMessage(
-        "You are a senior .NET engineer. Explain concepts clearly to junior developers."),
-
-    new UserChatMessage(
-        "Explain Dependency Injection in ASP.NET Core.")
-};
-
-ChatCompletion completion = chatClient.CompleteChat(
-    messages,
-    new ChatCompletionOptions
-    {
-        Temperature = 0.2f,
-        MaxOutputTokenCount = 300
-    });
-
-Console.WriteLine("Assistant:");
-Console.WriteLine(completion.Content[0].Text);
+    Console.WriteLine("Enter your prompt:");
+    string prompt = Console.ReadLine();
+    var response = await client.Models.GenerateContentAsync(
+        model: "gemini-3.5-flash",
+        contents: prompt
+    );
+    Console.WriteLine("Assistant:");
+    Console.WriteLine(response.Text);
+}

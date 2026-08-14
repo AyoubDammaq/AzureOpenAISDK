@@ -5,11 +5,16 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>440845f1-69e3-46ef-ba78-7cae5a08ab6e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
     <PackageReference Include="Azure.Core" Version="1.60.0" />
+    <PackageReference Include="Google.GenAI" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.11" />
     <PackageReference Include="OpenAI" Version="2.12.0" />
   </ItemGroup>
 
